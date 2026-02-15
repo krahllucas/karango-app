@@ -3,13 +3,11 @@ import 'package:karango_app/app/core/colors.dart';
 import 'package:karango_app/app/screens/refueling.dart';
 import 'package:karango_app/app/screens/refueling_add.dart';
 
-class BottomBar extends StatefulWidget {
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
+class BottomBar extends StatelessWidget {
+  final int currentIndex;
+  final Function(int) onTap;
 
-class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
+  BottomBar({required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +15,8 @@ class _BottomBarState extends State<BottomBar> {
       backgroundColor: const Color.fromARGB(255, 5, 55, 219), // Força a cor de fundo
       selectedItemColor: Colors.white, // Cor do item selecionado
       unselectedItemColor: Colors.white70, // Cor dos itens não selecionados
-      currentIndex: _selectedIndex,
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-        if (index == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => RefuelingListScreen()),
-          );
-        }
-      },
+      currentIndex: currentIndex,
+      onTap: onTap,
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.dashboard),
