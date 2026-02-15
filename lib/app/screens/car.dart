@@ -15,7 +15,7 @@ class CarScreen extends StatelessWidget {
         builder: (context, carProvider, child) {
           if (carProvider.cars.isEmpty) {
             return const Center(
-              child: Text('Nenhum carro disponível'),
+              child: Text('Nenhum veículo disponível'),
             );
           }
           return ListView.builder(
