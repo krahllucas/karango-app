@@ -3,12 +3,17 @@ import 'package:karango_app/app/widgets/appbar.dart';
 import 'package:karango_app/app/widgets/bottonbar.dart';
 import 'package:karango_app/app/widgets/highlightcard.dart';
 import 'package:karango_app/app/widgets/menu.dart';
+import 'package:provider/provider.dart';
+import 'package:karango_app/app/providers/refueling.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final averageConsumption = context.watch<RefuelingProvider>().getAverageConsumption();
+    final totalMonthlyCost = context.watch<RefuelingProvider>().getTotalMonthlyCost();
+
     return Scaffold(
       appBar: CustomAppBarWidget(),
       drawer: const MenuWidget(),
@@ -25,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: HighlightCard(
-                      value: 'R\$ 1.250,00',
+                      value: 'R\$ ${totalMonthlyCost.toStringAsFixed(2)}',
                       icon: Icons.attach_money,
                       label: 'Gasto Mensal',
                     ),
@@ -35,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: HighlightCard(
-                      value: '6,98 KM/L',
+                      value: '${averageConsumption.toStringAsFixed(2)} KM/L',
                       icon: Icons.local_gas_station_outlined,
                       label: 'Média de Consumo',
                     ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:karango_app/app/core/db.dart';
 import 'package:karango_app/app/models/refueling.dart';
@@ -48,5 +47,38 @@ class RefuelingProvider extends ChangeNotifier {
     });
 
     notifyListeners();
+  }
+
+  //buscar a media de consumo deste ultimo abastecimento com tank cheio
+  double getAverageConsumption() {
+    print('Calculando média de consumo...');
+    final fullTankRefuelings =
+        _refuelings.where((r) => r.isFullTank).toList();
+
+    print('Abastecimentos com tanque cheio encontrados: ${fullTankRefuelings.length}');
+    if (fullTankRefuelings.length < 2) {
+      return 0.0; // Não há dados suficientes para calcular a média
+    }
+
+    // Consider only the two most recent full-tank refuelings
+    fullTankRefuelings.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+    final recentRefuelings = fullTankRefuelings.take(2).toList();
+
+    final previous = recentRefuelings[1];
+    final current = recentRefuelings[0];
+
+    final totalLiters = current.liters;
+    final totalDistance = current.odometer - previous.odometer;
+
+    print('Litros abastecidos: $totalLiters');
+    print('Distância percorrida: $totalDistance km');
+    return totalDistance / totalLiters; // km por litro
+  }
+
+  double getTotalMonthlyCost() {
+    final now = DateTime.now();
+    final currentMonthRefuelings = _refuelings.where((r) =>
+        r.dateTime.year == now.year && r.dateTime.month == now.month);
+    return currentMonthRefuelings.fold(0.0, (sum, r) => sum + r.totalCost);
   }
 }
