@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/core/colors.dart';
+import 'package:karango_app/app/screens/refueling.dart';
+import 'package:karango_app/app/screens/refueling_add.dart';
 
 class BottomBar extends StatefulWidget {
   @override
@@ -20,6 +22,12 @@ class _BottomBarState extends State<BottomBar> {
         setState(() {
           _selectedIndex = index;
         });
+        if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => RefuelingListScreen()),
+          );
+        }
       },
       items: [
         BottomNavigationBarItem(
@@ -47,6 +55,12 @@ class _BottomBarState extends State<BottomBar> {
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
                 value: 'Abastecimento',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RefuelingScreen()),
+                  );
+                },
                 child: Text('Abastecimento'),
               ),
               PopupMenuItem(

@@ -1,6 +1,6 @@
 
 class Car {
-  final String id;
+  final int id;
   final String name;
   final String? plate;
   final String brand;
@@ -10,7 +10,7 @@ class Car {
 
 
   const Car({
-    required this.id,
+    this.id = 0,
     required this.name,
     this.plate,
     required this.brand,

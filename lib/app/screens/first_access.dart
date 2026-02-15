@@ -155,7 +155,6 @@ class _FirstAccessScreenState extends State<FirstAccessScreen> {
       Provider.of<CarProvider>(context, listen: false)
           .addCar(
             Car(
-              id: DateTime.now().millisecondsSinceEpoch.toString(),
               name: _nameController.text,
               brand: _brandController.text,
               model: _modelController.text,

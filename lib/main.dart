@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karango_app/app/providers/refueling.dart';
 import 'package:karango_app/app/screens/home.dart';
 import 'package:provider/provider.dart';
 import 'package:karango_app/app/core/colors.dart';
@@ -10,6 +11,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CarProvider()),
+        ChangeNotifierProvider(create: (_) => RefuelingProvider()),
       ],
       child: const MyApp(),
     ),
