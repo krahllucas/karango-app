@@ -9,7 +9,7 @@ class CarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Carros'),
+        title: const Text('Veículos'),
       ),
       body: Consumer<CarProvider>(
         builder: (context, carProvider, child) {
