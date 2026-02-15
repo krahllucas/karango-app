@@ -3,10 +3,7 @@ import 'package:karango_app/app/screens/dashboard.dart';
 import 'package:karango_app/app/screens/refueling.dart';
 import 'package:karango_app/app/widgets/appbar.dart';
 import 'package:karango_app/app/widgets/bottonbar.dart';
-import 'package:karango_app/app/widgets/highlightcard.dart';
 import 'package:karango_app/app/widgets/menu.dart';
-import 'package:provider/provider.dart';
-import 'package:karango_app/app/providers/refueling.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
