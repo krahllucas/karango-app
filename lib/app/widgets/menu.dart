@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/core/colors.dart';
+import 'package:karango_app/app/screens/car.dart';
 import 'package:karango_app/app/screens/fuel.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -23,7 +24,12 @@ class MenuWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.directions_car),
             title: Text('Veículos'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CarScreen()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.local_gas_station),
