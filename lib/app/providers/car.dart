@@ -17,6 +17,10 @@ class CarProvider with ChangeNotifier {
             model: item['model'],
             year: item['year'],
             tankVolume: item['tank_volume'],
+            fuelTypes: (item['fuel_types'] as String)
+                .split(',')
+                .map((id) => int.parse(id))
+                .toList(),
           ),
         )
         .toList();
@@ -38,6 +42,7 @@ class CarProvider with ChangeNotifier {
       'model': car.model,
       'year': car.year,
       'tank_volume': car.tankVolume,
+      'fuel_types': car.fuelTypes.join(','),
     });
 
     notifyListeners();

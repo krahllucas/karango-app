@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:karango_app/app/models/refueling.dart';
 import 'package:karango_app/app/providers/car.dart';
+import 'package:karango_app/app/providers/fuel.dart';
 import 'package:karango_app/app/providers/refueling.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
   final _litersController = TextEditingController();
   final _locationController = TextEditingController();
 
-  String _selectedFuelType = 'Gasolina';
+  int _selectedFuelId = 1;
   bool _isFullTank = false;
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
@@ -57,7 +58,7 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
             _selectedTime.minute,
           ),
           odometer: int.parse(_odometerController.text),
-          fuelType: _selectedFuelType,
+          fuelId: _selectedFuelId,
           pricePerLiter: double.parse(_priceController.text),
           totalCost: double.parse(_totalController.text),
           liters: double.parse(_litersController.text),
@@ -177,17 +178,23 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
               ),
               const SizedBox(height: 16),
               // Tipo de Combustível
-              DropdownButtonFormField<String>(
-                value: _selectedFuelType,
+              DropdownButtonFormField<int>(
+                value: context.watch<FuelProvider>().getFuelsByTypes(context.read<CarProvider>().cars.first.fuelTypes)
+                    .any((fuel) => fuel.id == _selectedFuelId)
+                    ? _selectedFuelId
+                    : null,
                 decoration: const InputDecoration(
                   labelText: 'Tipo de Combustível',
                   border: OutlineInputBorder(),
                 ),
-                items: ['Gasolina', 'Diesel', 'Etanol', 'Híbrido']
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
+                items: context.watch<FuelProvider>().getFuelsByTypes(context.read<CarProvider>().cars.first.fuelTypes).map((fuel) {
+                  return DropdownMenuItem(
+                    value: fuel.id,
+                    child: Text(fuel.name),
+                  );
+                }).toList(),
                 onChanged: (value) =>
-                    setState(() => _selectedFuelType = value ?? 'Gasolina'),
+                    setState(() => _selectedFuelId = value ?? 1),
               ),
               const SizedBox(height: 16),
               // Preço por Litro e Quantidade de Litros

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/core/colors.dart';
+import 'package:karango_app/app/screens/fuel.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -27,7 +28,12 @@ class MenuWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.local_gas_station),
             title: Text('Combustíveis'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FuelScreen()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.store),

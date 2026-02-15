@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:karango_app/app/core/fueltype.dart';
 import 'package:karango_app/app/models/car.dart';
 import 'package:karango_app/app/providers/car.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 import 'package:provider/provider.dart';
 
 class FirstAccessScreen extends StatefulWidget {
@@ -23,6 +25,8 @@ class _FirstAccessScreenState extends State<FirstAccessScreen> {
   final _plateController = TextEditingController();
   final _yearController = TextEditingController();
   final _tankVolumeController = TextEditingController();
+
+  List<int> _selectedFuelTypes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +142,19 @@ class _FirstAccessScreenState extends State<FirstAccessScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+              // Tipos de Combustível
+              MultiDropdown<int>(items: Fueltype.fuelTypes.entries.map((entry) {
+                return DropdownItem(
+                  value: entry.key,
+                  label: entry.value,
+                );
+              }).toList(), onSelectionChange: (values) {
+                setState(() {
+                  _selectedFuelTypes = values;
+                });
+              }),
+
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _submitForm,
@@ -152,6 +169,16 @@ class _FirstAccessScreenState extends State<FirstAccessScreen> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+
+
+      print('Tipos de combustível selecionados: $_selectedFuelTypes');
+      if (_selectedFuelTypes.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Selecione pelo menos um tipo de combustível')),
+        );
+        return;
+      }
+
       Provider.of<CarProvider>(context, listen: false)
           .addCar(
             Car(
@@ -161,6 +188,7 @@ class _FirstAccessScreenState extends State<FirstAccessScreen> {
               year: int.parse(_yearController.text),
               plate: _plateController.text,
               tankVolume: double.parse(_tankVolumeController.text),
+              fuelTypes: List.from(_selectedFuelTypes),
             ),
           )
           .onError(

@@ -7,6 +7,7 @@ class Car {
   final String model;
   final int year;
   final double tankVolume;
+  final List<int> fuelTypes;
 
 
   const Car({
@@ -17,5 +18,6 @@ class Car {
     required this.model,
     required this.year,
     required this.tankVolume,
+    required this.fuelTypes,
   });
 }

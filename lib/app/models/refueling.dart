@@ -3,7 +3,7 @@ class Refueling {
   final int carId;
   final DateTime dateTime;
   final int odometer;
-  final String fuelType;
+  final int fuelId;
   final double pricePerLiter;
   final double totalCost;
   final double liters;
@@ -15,7 +15,7 @@ class Refueling {
     required this.carId,
     required this.dateTime,
     required this.odometer,
-    required this.fuelType,
+    required this.fuelId,
     required this.pricePerLiter,
     required this.totalCost,
     required this.liters,
