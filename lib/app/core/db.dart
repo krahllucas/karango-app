@@ -3,7 +3,7 @@ import 'package:path/path.dart' as path;
 
 class DbUtil {
   static const _dbName = 'karango4.db';
-  static const _dbVersion = 10;
+  static const _dbVersion = 11;
 
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -71,6 +71,16 @@ class DbUtil {
     ''');
 
     await ensureServiceTypesData(db);
+
+    // Tipos de Despesas
+    await db.execute('''
+      CREATE TABLE expense_type (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+      );
+    ''');
+
+    await ensureExpenseTypesData(db);
   }
 
   static Future<void> ensureFuelData(sql.Database db) async {
@@ -121,6 +131,25 @@ class DbUtil {
       await db.execute("INSERT INTO service_type (name) VALUES ('Velas de Ignição');");
       await db.execute("INSERT INTO service_type (name) VALUES ('Vidros e Espelhos');");
       await db.execute("INSERT INTO service_type (name) VALUES ('Outros');");
+    }
+  }
+
+  static Future<void> ensureExpenseTypesData(sql.Database db) async {
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM expense_type');
+    final count = result.first['count'] as int;
+
+    if (count == 0) {
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Aquisição');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Estacionamento');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Financiamento');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('IPVA');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Licenciamento Anual');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Seguro DPVAT');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Lava-rápido');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Multa');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Pedágio');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Seguro Particular');");
+      await db.execute("INSERT INTO expense_type (name) VALUES ('Transporte especial (balsa, ferry, guincho)');");
     }
   }
 
@@ -178,6 +207,15 @@ class DbUtil {
       ''');
 
       await ensureServiceTypesData(db);
+    }else if (oldVersion < 11) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS expense_type (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL
+        );
+      ''');
+
+      await ensureExpenseTypesData(db);
     }
   }
 
