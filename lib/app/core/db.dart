@@ -3,7 +3,7 @@ import 'package:path/path.dart' as path;
 
 class DbUtil {
   static const _dbName = 'karango4.db';
-  static const _dbVersion = 9;
+  static const _dbVersion = 10;
 
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -61,6 +61,16 @@ class DbUtil {
     ''');
 
     await ensureFuelData(db);
+
+    // Tipos de Serviços
+    await db.execute('''
+      CREATE TABLE service_type (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+      );
+    ''');
+
+    await ensureServiceTypesData(db);
   }
 
   static Future<void> ensureFuelData(sql.Database db) async {
@@ -73,6 +83,44 @@ class DbUtil {
       await db.execute("INSERT INTO fuel (name, type) VALUES ('Gasolina Premium', 1);");
       await db.execute("INSERT INTO fuel (name, type) VALUES ('Etanol', 2);");
       await db.execute("INSERT INTO fuel (name, type) VALUES ('Diesel', 3);");
+    }
+  }
+
+  static Future<void> ensureServiceTypesData(sql.Database db) async {
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM service_type');
+    final count = result.first['count'] as int;
+
+    if (count == 0) {
+      await db.execute("INSERT INTO service_type (name) VALUES ('Ar Condicionado');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Bateria');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Bomba de Combustível');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Direção Hidráulica');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Correias');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Filtro de Ar');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Filtro de Combustível');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Filtro de Óleo');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Fluido de Freio');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Fluido de Transmissão');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Fluido de Direção Hidráulica');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Fluido de Suspensão');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Fluido de Arrefecimento');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Limpadores de Para-brisa');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Luzes');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Mão de Obra');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Pastilha de Freio');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Pneus');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Alinhamento e Balanceamento de Rodas');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Rodizio de Pneus');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Radiador');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Revisão');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Som');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Suspenção');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Troca de Freio');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Troca de Óleo');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Manutenção de Ar Condicionado');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Velas de Ignição');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Vidros e Espelhos');");
+      await db.execute("INSERT INTO service_type (name) VALUES ('Outros');");
     }
   }
 
@@ -121,6 +169,15 @@ class DbUtil {
       await db.execute('''
         ALTER TABLE refueling ADD COLUMN fuel_id INTEGER NOT NULL DEFAULT 1;
       ''');
+    }else if (oldVersion < 10) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS service_type (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL
+        );
+      ''');
+
+      await ensureServiceTypesData(db);
     }
   }
 
