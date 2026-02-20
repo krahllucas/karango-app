@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/core/colors.dart';
 import 'package:karango_app/app/screens/car.dart';
+import 'package:karango_app/app/screens/expensetype.dart';
 import 'package:karango_app/app/screens/fuel.dart';
 import 'package:karango_app/app/screens/servicetype.dart';
 
@@ -60,7 +61,12 @@ class MenuWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.money),
             title: Text('Tipos de Despesas'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ExpenseTypeScreen()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.payment),

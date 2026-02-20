@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/core/theme.dart';
+import 'package:karango_app/app/providers/expensetype.dart';
 import 'package:karango_app/app/providers/fuel.dart';
 import 'package:karango_app/app/providers/refueling.dart';
 import 'package:karango_app/app/providers/servicetype.dart';
@@ -18,6 +19,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => RefuelingProvider()),
         ChangeNotifierProvider(create: (_) => FuelProvider()),
         ChangeNotifierProvider(create: (_) => ServiceTypeProvider()),
+        ChangeNotifierProvider(create: (_) => ExpenseTypeProvider()),
       ],
       child: const MyApp(),
     ),
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
     ).loadRefuelings();
     await Provider.of<FuelProvider>(context, listen: false).loadFuels();
     await Provider.of<ServiceTypeProvider>(context, listen: false).loadServiceTypes();
+    await Provider.of<ExpenseTypeProvider>(context, listen: false).loadExpenseTypes();
   }
 
   // This widget is the root of your application.
