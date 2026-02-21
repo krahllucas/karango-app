@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:karango_app/app/models/refueling.dart';
 import 'package:karango_app/app/providers/car.dart';
 import 'package:karango_app/app/providers/fuel.dart';
+import 'package:karango_app/app/providers/payment_method.dart';
 import 'package:karango_app/app/providers/refueling.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
   final _locationController = TextEditingController();
 
   int _selectedFuelId = 1;
+  int _selectedPaymentMethodId = 1;
   bool _isFullTank = false;
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
@@ -64,6 +66,7 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
           liters: double.parse(_litersController.text),
           location: _locationController.text,
           isFullTank: _isFullTank,
+          paymentMethodId: _selectedPaymentMethodId,
         ),
       ).then((_) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -268,6 +271,30 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
                 value: _isFullTank,
                 onChanged: (value) => setState(() => _isFullTank = value),
                 contentPadding: EdgeInsets.zero,
+              ),
+              
+              // Forma de Pagamento
+              DropdownButtonFormField<String>(
+                value: context.watch<PaymentMethodProvider>().paymentMethods.isNotEmpty
+                    ? context.watch<PaymentMethodProvider>().paymentMethods.first.id.toString()
+                    : null,
+                decoration: const InputDecoration(
+                  labelText: 'Forma de Pagamento',
+                  border: OutlineInputBorder(),
+                ),
+                items: context.watch<PaymentMethodProvider>().paymentMethods.map((paymentMethod) {
+                  return DropdownMenuItem(
+                    value: paymentMethod.id.toString(),
+                    child: Text(paymentMethod.name),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedPaymentMethodId = int.parse(value ?? '1');
+                  });
+                },
+                validator: (value) =>
+                    value == null ? 'Selecione uma forma de pagamento' : null,
               ),
               const SizedBox(height: 16),
               // Local do Abastecimento

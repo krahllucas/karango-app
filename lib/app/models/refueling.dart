@@ -9,6 +9,7 @@ class Refueling {
   final double liters;
   final String location;
   final bool isFullTank;
+  final int paymentMethodId;
 
   const Refueling({
     this.id = 0,
@@ -21,5 +22,6 @@ class Refueling {
     required this.liters,
     required this.location,
     required this.isFullTank,
+    required this.paymentMethodId,
   });
 }
