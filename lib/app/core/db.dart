@@ -3,7 +3,7 @@ import 'package:path/path.dart' as path;
 
 class DbUtil {
   static const _dbName = 'karango4.db';
-  static const _dbVersion = 11;
+  static const _dbVersion = 15;
 
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -81,6 +81,16 @@ class DbUtil {
     ''');
 
     await ensureExpenseTypesData(db);
+
+    //Formas de Pagamento
+    await db.execute('''
+      CREATE TABLE payment_method (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+      );
+     ''');
+
+     await ensurePaymentMethodsData(db);
   }
 
   static Future<void> ensureFuelData(sql.Database db) async {
@@ -153,6 +163,18 @@ class DbUtil {
     }
   }
 
+  static Future<void> ensurePaymentMethodsData(sql.Database db) async {
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM payment_method');
+    final count = result.first['count'] as int;
+
+    if (count == 0) {
+      await db.execute("INSERT INTO payment_method (name) VALUES ('Dinheiro');");
+      await db.execute("INSERT INTO payment_method (name) VALUES ('Cartão de Crédito');");
+      await db.execute("INSERT INTO payment_method (name) VALUES ('Cartão de Débito');");
+      await db.execute("INSERT INTO payment_method (name) VALUES ('Pix');");
+    }
+  }
+
   static Future<void> _onUpgrade(
     sql.Database db,
     int oldVersion,
@@ -216,6 +238,15 @@ class DbUtil {
       ''');
 
       await ensureExpenseTypesData(db);
+    }else if (oldVersion < 15) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS payment_method (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL
+        );
+      ''');
+
+      await ensurePaymentMethodsData(db);
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:karango_app/app/core/colors.dart';
 import 'package:karango_app/app/screens/car.dart';
 import 'package:karango_app/app/screens/expensetype.dart';
 import 'package:karango_app/app/screens/fuel.dart';
+import 'package:karango_app/app/screens/payment_method.dart';
 import 'package:karango_app/app/screens/servicetype.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -71,7 +72,12 @@ class MenuWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Formas de Pagamentos'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PaymentMethodScreen()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),
