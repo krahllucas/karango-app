@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/providers/refueling.dart';
+import 'package:karango_app/app/providers/tirecalibration.dart';
 import 'package:karango_app/app/widgets/highlightcard.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,9 @@ class HomeDashboardWidget extends StatelessWidget {
     final totalMonthlyCost = context
         .watch<RefuelingProvider>()
         .getTotalMonthlyCost();
+    final lastTireCalibration = context
+        .watch<TireCalibrationProvider>()
+        .lastCalibrationDays;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -52,7 +56,7 @@ class HomeDashboardWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: HighlightCard(
-                    value: 'X dias',
+                    value: '$lastTireCalibration dias',
                     icon: Icons.tire_repair_outlined,
                     label: 'Última calibragem',
                   ),

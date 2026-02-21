@@ -4,6 +4,7 @@ import 'package:karango_app/app/screens/car.dart';
 import 'package:karango_app/app/screens/expensetype.dart';
 import 'package:karango_app/app/screens/fuel.dart';
 import 'package:karango_app/app/screens/servicetype.dart';
+import 'package:karango_app/app/screens/tirecalibration_list.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -30,6 +31,16 @@ class MenuWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const CarScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.tire_repair_outlined),
+            title: Text('Calibração de Pneus'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TireCalibrationListScreen()),
               );
             },
           ),

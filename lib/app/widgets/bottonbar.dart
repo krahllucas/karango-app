@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karango_app/app/core/colors.dart';
-import 'package:karango_app/app/screens/refueling.dart';
 import 'package:karango_app/app/screens/refueling_add.dart';
+import 'package:karango_app/app/screens/tirecalibration_add.dart';
 
 class BottomBar extends StatelessWidget {
   final int currentIndex;
@@ -59,6 +59,15 @@ class BottomBar extends StatelessWidget {
                 value: 'Serviço',
                 child: Text('Serviço'),
               ),
+              PopupMenuItem(
+                child: Text('Calibração de Pneus'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TireCalibrationAddScreen()),
+                  );
+                },
+              )
             ],
           ),
           label: 'Mais',

@@ -4,6 +4,7 @@ import 'package:karango_app/app/providers/expensetype.dart';
 import 'package:karango_app/app/providers/fuel.dart';
 import 'package:karango_app/app/providers/refueling.dart';
 import 'package:karango_app/app/providers/servicetype.dart';
+import 'package:karango_app/app/providers/tirecalibration.dart';
 import 'package:karango_app/app/screens/home.dart';
 import 'package:provider/provider.dart';
 import 'package:karango_app/app/screens/first_access.dart';
@@ -20,6 +21,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FuelProvider()),
         ChangeNotifierProvider(create: (_) => ServiceTypeProvider()),
         ChangeNotifierProvider(create: (_) => ExpenseTypeProvider()),
+        ChangeNotifierProvider(create: (_) => TireCalibrationProvider()),
       ],
       child: const MyApp(),
     ),
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
     await Provider.of<FuelProvider>(context, listen: false).loadFuels();
     await Provider.of<ServiceTypeProvider>(context, listen: false).loadServiceTypes();
     await Provider.of<ExpenseTypeProvider>(context, listen: false).loadExpenseTypes();
+    await Provider.of<TireCalibrationProvider>(context, listen: false).loadTireCalibrations();
   }
 
   // This widget is the root of your application.
@@ -54,7 +57,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Erro ao carregar dados.'));
+            return Center(child: Text('Erro ao carregar dados: ${snapshot.error}'));
           } else {
             return Consumer<CarProvider>(
               builder: (context, carProvider, _) {

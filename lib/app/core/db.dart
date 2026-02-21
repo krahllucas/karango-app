@@ -3,7 +3,7 @@ import 'package:path/path.dart' as path;
 
 class DbUtil {
   static const _dbName = 'karango4.db';
-  static const _dbVersion = 11;
+  static const _dbVersion = 13;
 
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -81,6 +81,29 @@ class DbUtil {
     ''');
 
     await ensureExpenseTypesData(db);
+
+    // Calibração de Pneus
+    await db.execute('''
+      CREATE TABLE tire_calibration (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        car_id INTEGER NOT NULL,
+        date_time TEXT NOT NULL,
+        odometer INTEGER NOT NULL,
+        location TEXT,
+        notes TEXT
+      )
+    ''');
+
+    //Detalhes da calibração de pneus
+    await db.execute('''
+      CREATE TABLE tire_calibration_detail (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        calibration_id INTEGER NOT NULL,
+        position TEXT NOT NULL,
+        pressure REAL NOT NULL,
+        FOREIGN KEY (calibration_id) REFERENCES tire_calibration(id)
+      )
+    ''');
   }
 
   static Future<void> ensureFuelData(sql.Database db) async {
@@ -216,6 +239,35 @@ class DbUtil {
       ''');
 
       await ensureExpenseTypesData(db);
+    }else if (oldVersion < 12) {
+      await db.execute('''
+        CREATE TABLE tire_calibration (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          car_id INTEGER NOT NULL,
+          date_time TEXT NOT NULL,
+          odometer INTEGER NOT NULL,
+          location TEXT,
+          notes TEXT
+        )
+      ''');
+
+      await db.execute('''
+        CREATE TABLE tire_calibration_detail (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          calibration_id INTEGER NOT NULL,
+          position TEXT NOT NULL,
+          pressure REAL NOT NULL,
+          FOREIGN KEY (calibration_id) REFERENCES tire_calibration(id)
+        )
+      ''');
+    }else if (oldVersion < 13) {
+      await db.execute('''
+        DELETE FROM tire_calibration;
+      ''');
+
+      await db.execute('''
+        DELETE FROM tire_calibration_detail;
+      ''');
     }
   }
 
