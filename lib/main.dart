@@ -5,6 +5,7 @@ import 'package:karango_app/app/providers/fuel.dart';
 import 'package:karango_app/app/providers/refueling.dart';
 import 'package:karango_app/app/providers/servicetype.dart';
 import 'package:karango_app/app/providers/tirecalibration.dart';
+import 'package:karango_app/app/providers/tirecalibration_detail.dart';
 import 'package:karango_app/app/screens/home.dart';
 import 'package:provider/provider.dart';
 import 'package:karango_app/app/screens/first_access.dart';
@@ -21,7 +22,9 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FuelProvider()),
         ChangeNotifierProvider(create: (_) => ServiceTypeProvider()),
         ChangeNotifierProvider(create: (_) => ExpenseTypeProvider()),
-        ChangeNotifierProvider(create: (_) => TireCalibrationProvider()),
+        ChangeNotifierProvider(
+          create: (_) => TireCalibrationProvider(TireCalibrationDetailProvider()),
+        ),
       ],
       child: const MyApp(),
     ),

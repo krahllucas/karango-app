@@ -1,10 +1,14 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:karango_app/app/core/db.dart';
 import 'package:karango_app/app/models/tirecalibration.dart';
+import 'package:karango_app/app/providers/tirecalibration_detail.dart';
 
 class TireCalibrationProvider with ChangeNotifier {
   List<TireCalibration> _tireCalibrations = [];
+
+  final TireCalibrationDetailProvider detailProvider;
+
+  TireCalibrationProvider(this.detailProvider);
 
   Future<void> loadTireCalibrations() async {
     final dataList = await DbUtil.getData('tire_calibration');
@@ -21,6 +25,31 @@ class TireCalibrationProvider with ChangeNotifier {
           ),
         )
         .toList();
+  }
+
+  Future<void> loadTireCalibrationsV2() async {
+    final dataList = await DbUtil.getData('tire_calibration');
+
+    _tireCalibrations = [];
+
+    for (var item in dataList) {
+      final positions = await detailProvider.loadTireCalibrationsByCalibrationId(item['id']);
+
+      _tireCalibrations.add(
+        TireCalibration(
+          id: item['id'],
+          carId: item['car_id'],
+          dateTime: DateTime.parse(item['date_time']),
+          odometer: item['odometer'],
+          location: item['location'],
+          notes: item['notes'],
+          details: positions.map((detail) => {
+            'position': detail.position,
+            'pressure': detail.pressure,
+          }).toList(),
+        ),
+      );
+    }
   }
 
   List<TireCalibration> get tireCalibrations {
