@@ -20,6 +20,7 @@ class RefuelingProvider extends ChangeNotifier {
             liters: item['liters'],
             location: item['location'],
             isFullTank: item['is_full_tank'] == 1,
+            paymentMethodId: item['payment_method_id'],
           ),
         )
         .toList();
@@ -44,6 +45,7 @@ class RefuelingProvider extends ChangeNotifier {
       'liters': refueling.liters,
       'location': refueling.location,
       'is_full_tank': refueling.isFullTank ? 1 : 0,
+      'payment_method_id': refueling.paymentMethodId,
     });
 
     notifyListeners();

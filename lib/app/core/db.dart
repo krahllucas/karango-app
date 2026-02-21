@@ -3,7 +3,7 @@ import 'package:path/path.dart' as path;
 
 class DbUtil {
   static const _dbName = 'karango4.db';
-  static const _dbVersion = 15;
+  static const _dbVersion = 17;
 
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
@@ -47,7 +47,8 @@ class DbUtil {
         total_cost REAL NOT NULL,
         liters REAL NOT NULL,
         location TEXT,
-        is_full_tank INTEGER NOT NULL
+        is_full_tank INTEGER NOT NULL,
+        payment_method_id INTEGER NOT NULL
       )
     ''');
 
@@ -247,6 +248,10 @@ class DbUtil {
       ''');
 
       await ensurePaymentMethodsData(db);
+    } else if (oldVersion < 17) {
+      await db.execute('''
+        ALTER TABLE refueling ADD COLUMN payment_method_id INTEGER NOT NULL DEFAULT 1;
+      ''');
     }
   }
 
