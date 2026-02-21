@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:karango_app/app/models/tirecalibration.dart';
 import 'package:karango_app/app/providers/car.dart';
 import 'package:karango_app/app/providers/tirecalibration.dart';
+import 'package:karango_app/app/widgets/button_form_save.dart';
 import 'package:karango_app/app/widgets/tirecalibration_form.dart';
 import 'package:provider/provider.dart';
 
@@ -78,7 +79,7 @@ class _TireCalibrationAddScreenState extends State<TireCalibrationAddScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DropdownButtonFormField<String>(
                 value: context.watch<CarProvider>().cars.isNotEmpty
@@ -176,9 +177,9 @@ class _TireCalibrationAddScreenState extends State<TireCalibrationAddScreen> {
               ),
 
               const SizedBox(height: 16),
-              ElevatedButton(
+              ButtonFormSaveWidget(
                 onPressed: _submitForm,
-                child: const Text('Salvar'),
+                text: 'Salvar Calibração de Pneus',
               ),
             ],
           ),

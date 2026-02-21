@@ -5,6 +5,7 @@ import 'package:karango_app/app/models/refueling.dart';
 import 'package:karango_app/app/providers/car.dart';
 import 'package:karango_app/app/providers/fuel.dart';
 import 'package:karango_app/app/providers/refueling.dart';
+import 'package:karango_app/app/widgets/button_form_save.dart';
 import 'package:provider/provider.dart';
 
 class RefuelingScreen extends StatefulWidget {
@@ -282,18 +283,9 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
               ),
               const SizedBox(height: 24),
               // Botão Salvar
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white, // Set text color here
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              ButtonFormSaveWidget(
                 onPressed: _submitForm,
-                child: const Text('Salvar Reabastecimento'),
+                text: 'Salvar Reabastecimento',
               ),
             ],
           ),
@@ -302,3 +294,5 @@ class _RefuelingScreenState extends State<RefuelingScreen> {
     );
   }
 }
+
+
