@@ -56,7 +56,15 @@ class TireCalibrationFormWidgetState extends State<TireCalibrationFormWidget> {
                     controller: _tireControllers[i],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: 'Pressão Pneu ${i + 1} (psi)',
+                      labelText: widget.tireCount == 2
+                          ? (i == 0 ? 'Dianteiro' : 'Traseiro')
+                          : widget.tireCount == 4
+                              ? (i == 0
+                                  ? 'Dianteiro Esq.'
+                                  : i == 2
+                                      ? 'Traseiro Esq.'
+                                      : 'Pneu ${i + 1}')
+                              : 'Pneu ${i + 1}',
                       border: const OutlineInputBorder(),
                     ),
                   ),
@@ -68,7 +76,15 @@ class TireCalibrationFormWidgetState extends State<TireCalibrationFormWidget> {
                       controller: _tireControllers[i + 1],
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Pressão Pneu ${i + 2} (psi)',
+                        labelText: widget.tireCount == 2
+                            ? (i == 0 ? 'Traseiro' : 'Dianteiro')
+                            : widget.tireCount == 4
+                                ? (i == 0
+                                    ? 'Dianteiro Dir.'
+                                    : i == 2
+                                        ? 'Traseiro Dir.'
+                                        : 'Pneu ${i + 2}')
+                                : 'Pneu ${i + 2}',
                         border: const OutlineInputBorder(),
                       ),
                     ),
