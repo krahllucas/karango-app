@@ -6,9 +6,11 @@ import 'package:karango_app/app/providers/payment_method.dart';
 import 'package:karango_app/app/providers/refueling.dart';
 import 'package:karango_app/app/providers/servicetype.dart';
 import 'package:karango_app/app/screens/home.dart';
+import 'package:karango_app/app/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:karango_app/app/screens/first_access.dart';
 import 'package:karango_app/app/providers/car.dart';
+import 'dart:async';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   Future<void> _initializeProviders(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 2));
     await Provider.of<CarProvider>(context, listen: false).loadCars();
     await Provider.of<RefuelingProvider>(
       context,
@@ -55,7 +58,7 @@ class MyApp extends StatelessWidget {
         future: _initializeProviders(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const SplashScreen();
           } else if (snapshot.hasError) {
             return const Center(child: Text('Erro ao carregar dados.'));
           } else {
